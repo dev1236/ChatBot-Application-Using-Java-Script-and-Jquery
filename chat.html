@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html encoding="UTF-8" charset="UTF-8"> 
+<head>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300&display=swap" rel="stylesheet">
+    <script type="text/javascript" src="main.js" charset="utf-8" ></script>
+    <style>
+        main {
+            flex: 1 0 auto;
+        }
+
+        #sticky-footer {
+            flex-shrink: none;
+        }
+
+        html, body {
+            font-family: 'Montserrat', sans-serif;
+            height: 50%;
+            max-height: 50%;
+			width: 50%;
+			max-width: 50%;
+			
+        }
+
+        .navbar:before {
+            position: absolute;
+            border-width: 0 12px 12px 0;
+            border-style: solid;
+            border-color: #fff #fff #658E15 #658E15;
+            background: #658E15;
+            -webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.3), -1px 1px 1px rgba(0,0,0,0.2);
+            -moz-box-shadow: 0 1px 1px rgba(0,0,0,0.3), -1px 1px 1px rgba(0,0,0,0.2);
+            box-shadow: 0 1px 1px rgba(0,0,0,0.3), -1px 1px 1px rgba(0,0,0,0.2);
+            display: block;
+         
+        }
+
+        body {
+            background: url('images.png');
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+main{
+    overflow: auto;
+    height: 75%;    
+}
+        #action-bar .form-group {
+            width: 100%;
+        }
+
+        #topNavbar{
+            background-color:  #343a40!important;
+        }
+
+        #txtMessage {
+            width: 80%;
+        }
+
+        .speech-bubble-right, .speech-bubble-left {
+            position: relative;
+            background: #00a2e0;
+            border-radius: .4em;
+            margin-top: 20px;
+            clear: both;
+            transition: transform 0.1s linear;
+        }
+
+            .speech-bubble-right:hover, .speech-bubble-left:hover {
+                transform: scaleY(1.1);
+            }
+
+        .speech-bubble-left {
+            background: #86bc25;
+            margin-top: 10px;
+        }
+
+
+        .speech-bubble-right:after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            border: 20px solid transparent;
+            border-left-color: #00a2e0;
+            margin-top: -10px;
+            margin-right: -20px;
+        }
+
+        .speech-bubble-left:after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            border: 20px solid transparent;
+            border-right-color: #86bc25;
+            margin-top: -10px;
+            margin-left: -20px;
+        }
+
+        #btnSend {
+            transition: all 0.1s linear;
+        }
+
+        #btnSend:disabled {
+            transition: none !important;
+        }
+
+            #btnSend:hover {
+                transform: scale(1.08);
+                color: limegreen;
+            }
+
+            #btnSend:hover:disabled {
+                transform: scale(1);
+                color: white;
+            }
+
+            small.chat-info{
+                opacity: 0;
+                transition:opacity 0.2s linear;
+                font-size: 0.5rem;
+                padding-left:10px;
+            }
+            .speech-bubble-left:hover ~ small.chat-info{
+               opacity: 1;
+             }
+    </style>
+</head>
+
+<body class="d-flex flex-column" style="margin-top:800px; margin-bottom:100px;margin-left: 1000px";>
+	<div class="chat-box-main">
+    <header>
+        <nav class="navbar navbar-dark shadow" id="topNavbar">
+            <a class="navbar-brand" href="#"><img src="images.png" width="32" height="32" />&nbsp; Chat Here</b></a>
+        </nav>
+    </header>
+    <main role="main" class="flex-shrink-0 mt-2 p-2" id="centerPanel">
+        <div class="container-fluid" id="bubble-wrapper">
+        </div>
+        <div id="content"></div>
+    </main>
+   
+    <footer id="sticky-footer" class="py-2 bg-dark text-white-50">
+        <div class="container text-center">
+            <div class="row p-2" id="action-bar">
+                <div class="col">
+                    <div class="form-inline">
+                        <div class="form-group">
+
+							<input type="text" autocomplete="off" id="txtMessage" autofocus class="form-control mx-sm-3" aria-describedby="Input Text" placeholder="Enter your query" onkeypress="runScript(event)">
+							<button id="btnSend" type="button" class="btn btn-primary" onClick="runScript(event)">
+                                <svg width="20" height="20" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="paper-plane" class="svg-inline--fa fa-paper-plane fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M476 3.2L12.5 270.6c-18.1 10.4-15.8 35.6 2.2 43.2L121 358.4l287.3-253.2c5.5-4.9 13.3 2.6 8.6 8.3L176 407v80.5c0 23.6 28.5 32.9 42.5 15.8L282 426l124.6 52.2c14.2 6 30.4-2.9 33-18.2l72-432C515 7.8 493.3-6.8 476 3.2z"></path></svg>&nbsp;Send
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </footer>
+	</div>
+</body>
+
+</html>
